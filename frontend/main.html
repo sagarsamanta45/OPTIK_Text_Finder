@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OPTIK Text Finder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="telemetry-body cyber-theme">
+  <!-- Cyber Background Layers -->
+  <div class="cyber-bg-mesh"></div>
+  <div class="cyber-grid-overlay"></div>
+
+  <!-- Top Aerospace Navigation Header -->
+  <header class="telemetry-header">
+    <div class="header-brand">
+      <div class="brand-hex">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 2 8.5 2 15.5 12 22 22 15.5 22 8.5 12 2"></polygon>
+          <line x1="12" y1="22" x2="12" y2="15.5"></line>
+          <polyline points="22 8.5 12 15.5 2 8.5"></polyline>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title font-space">OPTIK<span class="cyan-accent">.MATRIX</span></span>
+        <span class="brand-sub font-mono">NEURAL OPTICAL RECON // v2.4</span>
+      </div>
+    </div>
+
+    <!-- Center System Status Telemetry -->
+    <div class="header-telemetry">
+      <div class="telemetry-pill">
+        <span class="status-ping"></span>
+        <span class="telemetry-label font-mono">SYS_STATE:</span>
+        <span class="telemetry-val font-mono cyan-glow">ONLINE</span>
+      </div>
+      <div class="telemetry-pill">
+        <span class="telemetry-label font-mono">WASM_CORE:</span>
+        <span class="telemetry-val font-mono" id="engineStatusVal">ARMED</span>
+      </div>
+      <div class="telemetry-pill live-clock-pill">
+        <span class="telemetry-label font-mono">UTC:</span>
+        <span class="telemetry-val font-mono" id="liveUtcClock">--:--:--</span>
+      </div>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="header-actions">
+      <button id="toggleInfoPaneBtn" class="telemetry-btn" title="Toggle Contextual Telemetry Sidebar">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+          <line x1="15" y1="3" x2="15" y2="21"></line>
+        </svg>
+        <span class="font-mono">TELEMETRY</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Asymmetric Workspace Layout -->
+  <div class="app-matrix-layout">
+    <!-- Left Floating Command Rail Navigation -->
+    <nav class="command-rail" aria-label="Command Rail">
+      <div class="rail-group">
+        <button class="rail-btn active" id="railIngestBtn" title="Document Ingestion Slot">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="12" y1="18" x2="12" y2="12"></line>
+            <polyline points="9 15 12 12 15 15"></polyline>
+          </svg>
+          <span class="rail-tooltip font-mono">Ingest</span>
+        </button>
+
+        <button class="rail-btn" id="railOcrBtn" title="Trigger Neural OCR Engine">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+          <span class="rail-tooltip font-mono">Neural OCR</span>
+        </button>
+
+        <button class="rail-btn" id="railSearchFocusBtn" title="Focus Optical Search Reticle">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <span class="rail-tooltip font-mono">Search</span>
+        </button>
+      </div>
+
+      <div class="rail-group rail-bottom">
+        <button class="rail-btn" id="railClearBtn" title="Purge Matrix & Reset Workspace">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+          <span class="rail-tooltip font-mono">Purge Matrix</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Primary Central Telemetry / Data Workspace -->
+    <main class="primary-workspace">
+      <!-- Search & Command Deck -->
+      <section class="command-deck cyber-card">
+        <div class="corner-bracket top-left"></div>
+        <div class="corner-bracket top-right"></div>
+        <div class="corner-bracket bottom-left"></div>
+        <div class="corner-bracket bottom-right"></div>
+
+        <div class="deck-top-row">
+          <!-- Ingestion Slot -->
+          <div class="file-ingest-slot">
+            <label for="imageInput" class="custom-file-upload" id="fileDropZone">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <span id="fileNameDisplay" class="font-mono">INGEST DOSSIER (PDF / DOCX / IMAGE)</span>
+            </label>
+            <input type="file" id="imageInput"
+              accept="image/*,.pdf,.docx,.doc,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              class="hidden-input" multiple>
+          </div>
+
+          <!-- Analyze Matrix Trigger Button -->
+          <button id="analyzeBtn" class="cyber-btn cyber-btn-primary">
+            <span class="btn-glitch-fx"></span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+            <span id="analyzeBtnText" class="font-mono">ANALYZE PAGE</span>
+          </button>
+        </div>
+
+        <!-- Document Batch Shelf (Visible when documents are loaded) -->
+        <div id="docShelfBar" class="doc-shelf-bar hidden font-mono">
+          <div class="shelf-label">
+            <span class="status-ping"></span>
+            <span>BATCH_DOSSIERS:</span>
+          </div>
+          <div class="shelf-chips-scroll" id="shelfChipsList">
+            <!-- Dynamic document chips inserted here -->
+          </div>
+          <button id="addDocBtn" class="shelf-add-btn" title="Add another document to batch">
+            <span>+ ADD FILE</span>
+          </button>
+        </div>
+
+        <!-- Search Bar with Reticle Design & Regex Toggle -->
+        <div class="search-reticle-wrap">
+          <div class="search-icon-hud">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <input type="text" id="searchInput" placeholder="Enter target keyword, phrase, or regex pattern..."
+            class="cyber-search-input font-mono" autocomplete="off" spellcheck="false">
+          <button id="regexToggleBtn" class="regex-mode-btn font-mono" type="button"
+            title="Toggle Regular Expression Search Mode">
+            <span>.* REGEX</span>
+          </button>
+          <div class="search-shortcut-badge font-mono">ENTER ↵</div>
+          <button id="searchBtn" class="search-execute-btn" title="Execute Search Triangulation">
+            <span class="font-mono">TRIANGULATE</span>
+          </button>
+        </div>
+
+        <!-- Tactical Entity Recon Sweeper Bar -->
+        <div class="entity-recon-bar font-mono">
+          <span class="entity-bar-label">1-CLICK SWEEPS:</span>
+          <div class="entity-btns-group">
+            <button class="entity-sweep-btn" data-entity="email" type="button" title="Sweep for Email addresses">
+              <span class="entity-dot cyan">●</span> EMAILS
+            </button>
+            <button class="entity-sweep-btn" data-entity="url" type="button" title="Sweep for URLs & IP addresses">
+              <span class="entity-dot violet">●</span> URLs &amp; IPs
+            </button>
+            <button class="entity-sweep-btn" data-entity="date" type="button" title="Sweep for Dates & Timestamps">
+              <span class="entity-dot amber">●</span> DATES
+            </button>
+            <button class="entity-sweep-btn" data-entity="phone" type="button" title="Sweep for Telephone numbers">
+              <span class="entity-dot green">●</span> PHONES
+            </button>
+            <button class="entity-sweep-btn" data-entity="id" type="button"
+              title="Sweep for Sensitive IDs & Account numbers">
+              <span class="entity-dot red">●</span> SENSITIVE IDs
+            </button>
+          </div>
+        </div>
+
+        <!-- Target Stepper & Focus Zoom HUD -->
+        <div id="targetStepperBar" class="target-stepper-bar hidden font-mono">
+          <div class="stepper-meta">
+            <span class="target-ping"></span>
+            <span class="stepper-label">ACTIVE_TARGET:</span>
+            <span id="targetCounter" class="stepper-counter amber-glow">00 / 00</span>
+          </div>
+
+          <div class="stepper-nav-btns">
+            <button id="prevTargetBtn" class="stepper-btn" title="Previous Target (Shift+Enter or P)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+              <span>PREV</span>
+            </button>
+            <button id="nextTargetBtn" class="stepper-btn" title="Next Target (Enter or N)">
+              <span>NEXT</span>
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+
+          <div class="stepper-quick-info">
+            <span class="stepper-query-tag" id="stepperSnippetDisplay">LOCKED: "--"</span>
+            <button id="focusTargetBtn" class="stepper-btn-accent" title="Center viewport on active target">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M3 12h3m12 0h3M12 3v3m0 12v3"></path>
+              </svg>
+              <span>CENTER FOCUS</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Real-Time Progress Beam -->
+        <div id="progressContainer" class="progress-hud hidden">
+          <div class="progress-meta font-mono">
+            <div class="progress-phase">
+              <span class="terminal-prompt">&gt;&gt;</span>
+              <span id="progressStatus">INITIALIZING_OCR_WASM</span>
+            </div>
+            <span id="progressPercent" class="cyan-glow">00%</span>
+          </div>
+          <div class="progress-track-cyber">
+            <div id="progressBarFill" class="progress-beam-fill"></div>
+          </div>
+        </div>
+
+        <!-- Status & Notifications Bar -->
+        <div class="deck-status-row">
+          <p id="statusMsg" class="cyber-status-text font-mono" aria-live="polite">AWAITING_INPUT // UPLOAD A DOCUMENT
+            OR IMAGE TO INITIALIZE</p>
+          <button id="viewTextBtn" class="cyber-ghost-btn" type="button" title="Inspect indexed words">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+            <span class="font-mono" id="viewTextBtnLabel">STREAM: 0 WORDS</span>
+          </button>
+        </div>
+
+        <!-- Collapsible Text Stream Inspector Drawer -->
+        <div id="textDrawer" class="text-stream-drawer hidden">
+          <div class="stream-drawer-header">
+            <div class="drawer-title-wrap">
+              <span class="status-ping"></span>
+              <span class="stream-title font-mono">RAW OPTICAL STREAM (<span id="textCount">0</span> WORDS
+                INDEXED)</span>
+            </div>
+            <div class="stream-actions">
+              <button id="copyTextBtn" class="stream-btn font-mono" type="button" title="Copy raw text to clipboard">📋
+                COPY RAW</button>
+              <button id="closeDrawerBtn" class="stream-btn-close font-mono" type="button" title="Close stream view">✕
+                CLOSE</button>
+            </div>
+          </div>
+          <div id="textDrawerContent" class="stream-terminal-view font-mono">NO_DATA_AVAILABLE</div>
+        </div>
+      </section>
+
+      <!-- Multi-Page Document Navigator Bar -->
+      <div id="pageControls" class="page-nav-bar hidden">
+        <button id="prevPageBtn" class="page-step-btn font-mono" title="Previous Page">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          <span>PREV</span>
+        </button>
+        <div class="page-readout">
+          <span class="readout-label font-mono">ORBITAL_PAGE:</span>
+          <span id="pageIndicator" class="readout-val font-mono cyan-glow">01 / 01</span>
+        </div>
+        <button id="nextPageBtn" class="page-step-btn font-mono" title="Next Page">
+          <span>NEXT</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Telemetry Canvas Viewport Container -->
+      <section class="canvas-viewport-card cyber-card">
+        <div class="corner-bracket top-left"></div>
+        <div class="corner-bracket top-right"></div>
+        <div class="corner-bracket bottom-left"></div>
+        <div class="corner-bracket bottom-right"></div>
+
+        <div class="viewport-hud-header font-mono">
+          <div class="hud-meta-left">
+            <span class="hud-tag">FEED_01 // OPTICAL_VIEWPORT</span>
+            <span class="hud-res" id="canvasResolutionDisplay">0 × 0 PX</span>
+          </div>
+          <div class="hud-meta-right">
+            <div class="zoom-hud-controls" id="zoomControls">
+              <span class="zoom-label">MAG:</span>
+              <button id="zoomOutBtn" class="zoom-hud-btn" type="button" title="Zoom Out (-)">−</button>
+              <span id="zoomLevelDisplay" class="zoom-hud-val">FIT</span>
+              <button id="zoomInBtn" class="zoom-hud-btn" type="button" title="Zoom In (+)">+</button>
+              <button id="zoomResetBtn" class="zoom-hud-btn" type="button" title="Fit to Viewport">FIT</button>
+            </div>
+            <span class="hud-indicator active" id="docTypeBadge">FORMAT: STANDBY</span>
+          </div>
+        </div>
+
+        <div class="canvas-scroll-stage">
+          <canvas id="canvas"></canvas>
+        </div>
+      </section>
+    </main>
+
+    <!-- Collapsible Contextual Right Info-Pane -->
+    <aside class="telemetry-sidebar" id="telemetrySidebar">
+      <!-- Module 1: Live Telemetry Metrics -->
+      <div class="telemetry-module cyber-card">
+        <div class="corner-bracket top-left"></div>
+        <div class="corner-bracket top-right"></div>
+        <h4 class="module-title font-space">SYSTEM TELEMETRY</h4>
+
+        <div class="metrics-grid">
+          <div class="metric-cell">
+            <span class="metric-label font-mono">WORDS INDEXED</span>
+            <span class="metric-val font-mono cyan-glow" id="sideWordCount">0</span>
+          </div>
+          <div class="metric-cell">
+            <span class="metric-label font-mono">TARGETS HIT</span>
+            <span class="metric-val font-mono amber-glow" id="sideMatchCount">0</span>
+          </div>
+          <div class="metric-cell">
+            <span class="metric-label font-mono">OCR INTEGRITY</span>
+            <span class="metric-val font-mono violet-glow" id="sideConfidence">100%</span>
+          </div>
+          <div class="metric-cell">
+            <span class="metric-label font-mono">DOSSIER SPEC</span>
+            <span class="metric-val font-mono" id="sideDocFormat">STANDBY</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 2: Live Optical Targets Feed -->
+      <div class="telemetry-module cyber-card flex-feed-module">
+        <div class="corner-bracket top-left"></div>
+        <div class="corner-bracket top-right"></div>
+        <div class="module-title-bar">
+          <h4 class="module-title font-space">TARGET LOG</h4>
+          <span class="target-count font-mono" id="sideTargetsFound">0 TARGETS</span>
+        </div>
+        <div class="targets-feed" id="targetsFeed">
+          <div class="empty-feed-placeholder font-mono">&gt; Awaiting search query execution...</div>
+        </div>
+      </div>
+
+      <!-- Module 3: System Recon Specs -->
+      <div class="telemetry-module cyber-card">
+        <div class="corner-bracket top-left"></div>
+        <div class="corner-bracket top-right"></div>
+        <h4 class="module-title font-space">TELEMETRY ARCHITECTURE</h4>
+        <ul class="specs-list font-mono">
+          <li><span>OCR_ENGINE</span><span class="cyan-accent">TESSERACT_V5_WASM</span></li>
+          <li><span>PDF_RENDER</span><span class="cyan-accent">MOZILLA_PDFJS_3.11</span></li>
+          <li><span>DOC_PARSER</span><span class="cyan-accent">MAMMOTH_ENGINE</span></li>
+          <li><span>PRIVACY</span><span class="green-accent">LOCAL_AIRGAP_SECURE</span></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <!-- PDF.js for rendering and extracting PDF pages -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- Mammoth.js for Word (.docx) documents -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <!-- Tesseract.js for OCR -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" crossorigin="anonymous"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

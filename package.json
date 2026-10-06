@@ -1,0 +1,17 @@
+{
+  "name": "text-search",
+  "version": "1.0.0",
+  "description": "OCR and Visual Text Search Application",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node backend/server.js"
+  },
+  "keywords": ["ocr", "tesseract", "text-search", "canvas"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

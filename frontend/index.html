@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OPTIK Text Finder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="welcome-body cyber-theme">
+  <!-- Cyber Background Overlays -->
+  <div class="cyber-bg-mesh"></div>
+  <div class="cyber-grid-overlay"></div>
+
+  <div class="welcome-hud-card cyber-card">
+    <div class="corner-bracket top-left"></div>
+    <div class="corner-bracket top-right"></div>
+    <div class="corner-bracket bottom-left"></div>
+    <div class="corner-bracket bottom-right"></div>
+
+    <div class="welcome-top-meta">
+      <div class="welcome-badge">
+        <span class="status-ping"></span>
+        <span class="font-mono">SYS_STATUS: OPTICAL_LOCK_READY</span>
+      </div>
+
+      <div class="welcome-icon-wrap">
+        <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polygon points="12 2 2 8.5 2 15.5 12 22 22 15.5 22 8.5 12 2"></polygon>
+          <line x1="12" y1="22" x2="12" y2="15.5"></line>
+          <polyline points="22 8.5 12 15.5 2 8.5"></polyline>
+        </svg>
+      </div>
+    </div>
+
+    <h1 class="welcome-title font-space">OPTIK<span class="cyan-accent">.MATRIX</span></h1>
+    <p class="welcome-tagline">Autonomous Optical Recognition &amp; Deep Document Recon</p>
+    <p class="welcome-desc font-space">Air-gapped optical intelligence workstation to search, triangulate, and highlight
+      text across multi-page PDFs, Word documents, and photos with zero server latency.</p>
+
+    <!-- Key Capabilities Pill Bar -->
+    <div class="capability-pills font-mono">
+      <span class="cap-pill"><span class="cyan-accent">●</span> PDF / DOCX / IMG</span>
+      <span class="cap-pill"><span class="amber-accent">●</span> HUD RETICLE SEARCH</span>
+      <span class="cap-pill"><span class="violet-accent">●</span> HYBRID DUAL-ENGINE</span>
+      <span class="cap-pill"><span class="green-accent">●</span> 100% AIR-GAPPED</span>
+    </div>
+
+    <!-- Diagnostic & Capability Ticker -->
+    <div class="boot-ticker font-mono">
+      <div class="ticker-line">&gt; PURPOSE: REAL-TIME PHRASE TRIANGULATION &amp; VISUAL HUD HIGHLIGHTING</div>
+      <div class="ticker-line">&gt; ENGINES: MOZILLA_PDFJS_V3.11 // MAMMOTH_DOCX // TESSERACT_WASM_V5</div>
+      <div class="ticker-line">&gt; PRECISION: OCR HOMOGLYPH NORMALIZATION + FUZZY TYPO TOLERANCE</div>
+      <div class="ticker-line">&gt; PRIVACY: ZERO CLOUD TRANSMISSION // PURE CLIENT MEMORY AIRGAP</div>
+    </div>
+
+    <button id="enterMatrixBtn" class="cyber-btn cyber-btn-primary enter-btn font-mono">
+      <span class="btn-glitch-fx"></span>
+      <span>INITIALIZE TELEMETRY MATRIX ➔</span>
+    </button>
+  </div>
+
+  <script>
+    document.getElementById('enterMatrixBtn').addEventListener('click', () => {
+      window.location.href = 'main.html';
+    });
+    document.body.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        window.location.href = 'main.html';
+      }
+    });
+  </script>
+</body>
+
+</html>
